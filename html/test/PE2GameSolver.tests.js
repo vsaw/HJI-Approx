@@ -27,40 +27,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * TODO: Document
- */
-function Game() {
+module("PE2GameSolver", {
+	setup : function() {
+		// prepare something for all following tests
+		g = new PE2GameSolver();
+	},
+	teardown : function() {
+		// clean up after each test
+	}
+});
 
-	/**
-	 * Evalutes the Kinematic equation of a Game that describe how a Game
-	 * evolves.
-	 *
-	 * This will not check if the new state is valid but just return the new
-	 * state.
-	 *
-	 * @param state
-	 *            The current state.
-	 * @param controls
-	 *            The controls of all the players.
-	 * @param stepsize
-	 *            The amount of time for how long the controls are valid.
-	 *
-	 * @returns The new state.
-	 */
-	this.evalKE = function(state, controls, stepsize) {
-		throw "To be implemented by subclasses.";
-	};
+var g;
 
-	/**
-	 * Determines if a state is terminal
-	 *
-	 * @param state
-	 *            The state to check.
-	 *
-	 * @returns true if it is a terminal state where the game has ended.
-	 */
-	this.isTerminal = function(state) {
-		throw "To be implemented by subclasses.";
-	};
-}
+test("null with negative tolerance", function() {
+	equal(null, g.computeValueFunction(-1));
+});
+
+delete g;
