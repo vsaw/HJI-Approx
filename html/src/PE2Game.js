@@ -31,37 +31,30 @@
  * Evaluates the game state and calculates how it evolves and when it is
  * finished.
  */
-var Game = function() {
+var PE2Game = function() {
 
 	/**
-	 * Evalutes the Kinematic equation of a Game that describe how a Game
-	 * evolves.
-	 * 
-	 * This will not check if the new state is valid but just return the new
-	 * state.
-	 * 
-	 * @param state
-	 *            The current state.
-	 * @param controls
-	 *            The controls of all the players.
-	 * @param stepsize
-	 *            The amount of time for how long the controls are valid.
-	 * 
-	 * @returns The new state.
+	 * This is the capture radius. If the players are closer than this, capture
+	 * occured.
 	 */
+	this.captureRadius = 1e-3;
+
 	this.evalKE = function(state, controls, stepsize) {
 		throw "To be implemented by subclasses.";
 	};
 
-	/**
-	 * Determines if a state is terminal
-	 * 
-	 * @param state
-	 *            The state to check.
-	 * 
-	 * @returns true if it is a terminal state where the game has ended.
-	 */
 	this.isTerminal = function(state) {
-		throw "To be implemented by subclasses.";
+		if (this.captureRadius >= 0) {
+			if (Array.isArray(state)) {
+				if (state.length == 4) {
+					var p = state.slice(0, 2);
+					var e = state.slice(2, 5);
+					return State.equals(p, e, this.captureRadius);
+				}
+			}
+		}
+		return false;
 	};
 };
+
+PE2Game.prototype = Game;

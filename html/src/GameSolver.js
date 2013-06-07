@@ -30,7 +30,7 @@
 /**
  * TODO: Document
  */
-function GameSolver() {
+var GameSolver = function() {
 
 	/**
 	 * Dampening factor computed from the time step size in order to make our
@@ -112,4 +112,4 @@ function GameSolver() {
 	this.computeTrajectories = function(valueFunction, state) {
 		throw "To be implemented by subclasses.";
 	};
-}
+};

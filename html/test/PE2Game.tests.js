@@ -27,41 +27,39 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Evaluates the game state and calculates how it evolves and when it is
- * finished.
- */
-var Game = function() {
+var g;
 
-	/**
-	 * Evalutes the Kinematic equation of a Game that describe how a Game
-	 * evolves.
-	 * 
-	 * This will not check if the new state is valid but just return the new
-	 * state.
-	 * 
-	 * @param state
-	 *            The current state.
-	 * @param controls
-	 *            The controls of all the players.
-	 * @param stepsize
-	 *            The amount of time for how long the controls are valid.
-	 * 
-	 * @returns The new state.
-	 */
-	this.evalKE = function(state, controls, stepsize) {
-		throw "To be implemented by subclasses.";
-	};
+module("PE2Game", {
+	setup : function() {
+		// prepare something for all following tests
+		g = new PE2Game();
+	},
+	teardown : function() {
+		// clean up after each test
+	}
+});
 
-	/**
-	 * Determines if a state is terminal
-	 * 
-	 * @param state
-	 *            The state to check.
-	 * 
-	 * @returns true if it is a terminal state where the game has ended.
-	 */
-	this.isTerminal = function(state) {
-		throw "To be implemented by subclasses.";
-	};
-};
+test("capture", function() {
+	g.captureRadius = -1;
+	ok(!g.isTerminal([ 0, 0, 0, 0 ]));
+	
+	g.captureRadius = 0;
+	ok(g.isTerminal([ 0, 0, 0, 0 ]));
+
+	g.captureRadius = 1;
+	ok(g.isTerminal([ 0, 0, 0, 0 ]));
+	ok(g.isTerminal([ 1, 0, 0, 0 ]));
+	ok(g.isTerminal([ 1, 0, 0, 0 ]));
+	ok(g.isTerminal([ 0, 0, 1, 1 ]));
+
+	// No capture
+	ok(!g.isTerminal([ 1.1, 0, 0, 0 ]));
+	ok(!g.isTerminal([ 1.1, 1, 0, 0 ]));
+
+	// Garbage data
+	ok(!g.isTerminal(null));
+	ok(!g.isTerminal([ 1.1, 1, 0, 0, 0 ]));
+	ok(!g.isTerminal([ 1.1, 1, 0 ]));
+});
+
+delete g;

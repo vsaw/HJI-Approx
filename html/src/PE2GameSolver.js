@@ -30,7 +30,7 @@
 /**
  * TODO: Document
  */
-function PE2GameSolver() {
+var PE2GameSolver = function() {
 	/**
 	 * If true, players are allowed to stand still. Otherwise they have to make
 	 * a move.
@@ -147,4 +147,6 @@ function PE2GameSolver() {
 	this.computeTrajectories = function(valueFunction, state) {
 		throw "To be implemented by subclasses.";
 	};
-}
+};
+
+PE2GameSolver.prototype = GameSolver;
