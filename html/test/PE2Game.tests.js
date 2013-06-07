@@ -39,10 +39,48 @@ module("PE2Game", {
 	}
 });
 
+test("evalKE", function() {
+	/**
+	 * Checks if two states are equal within a certain tolerance
+	 * 
+	 * @param actual
+	 * 		The actual state
+	 * @param expected
+	 * 		The expected state
+	 */
+	var sEqu = function(actual, expected) {
+		if (!State.equals(expected, actual, 1e-9)) {
+			deepEqual(actual, expected);
+		}
+	};
+
+	// Move not to far!
+	var p = [ 0, 0, 0, 0 ];
+	ok(State.equals(p, g.evalKE(p, [ 1, 0 ], 1), 1));
+	ok(State.equals(p, g.evalKE(p, [ 15, 0 ], 1), 1));
+	ok(State.equals(p, g.evalKE(p, [ 0, 9 ], 1), 1));
+
+	// Move to far on purpose
+	ok(!State.equals(p, g.evalKE(p, [ 1, 0 ], 1.1), 1));
+	ok(!State.equals(p, g.evalKE(p, [ 0, 1 ], 1.1), 1));
+
+	// Set it to 4 so that I can only go up, right, down and left
+	g.controlResolution = 4;
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 0, 0 ], [ 1, 0 ]), [ 1, 0, 0, 0 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 1, 0 ], [ 1, 0 ]), [ 0, 1, 0, 0 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 2, 0 ], [ 1, 0 ]), [ -1, 0, 0, 0 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 3, 0 ], [ 1, 0 ]), [ 0, -1, 0, 0 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 0, 0 ], [ 0, 1 ]), [ 0, 0, 1, 0 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 0, 1 ], [ 0, 1 ]), [ 0, 0, 0, 1 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 0, 2 ], [ 0, 1 ]), [ 0, 0, -1, 0 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 0, 3 ], [ 0, 1 ]), [ 0, 0, 0, -1 ]);
+	sEqu(g.evalKE([ 0, 0, 0, 0 ], [ 0, 3 ], [ 1, 0.5 ]), [ 1, 0, 0, -0.5 ]);
+});
+
 test("capture", function() {
 	g.captureRadius = -1;
 	ok(!g.isTerminal([ 0, 0, 0, 0 ]));
-	
+
 	g.captureRadius = 0;
 	ok(g.isTerminal([ 0, 0, 0, 0 ]));
 
@@ -57,7 +95,6 @@ test("capture", function() {
 	ok(!g.isTerminal([ 1.1, 1, 0, 0 ]));
 
 	// Garbage data
-	ok(!g.isTerminal(null));
 	ok(!g.isTerminal([ 1.1, 1, 0, 0, 0 ]));
 	ok(!g.isTerminal([ 1.1, 1, 0 ]));
 });

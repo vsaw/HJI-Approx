@@ -34,26 +34,54 @@
 var PE2Game = function() {
 
 	/**
+	 * If true, players are allowed to stand still. Otherwise they have to make
+	 * a move.
+	 * 
+	 * By default players are allowed to stand still at one position.
+	 */
+	this.allowStandingStill = true;
+	/**
 	 * This is the capture radius. If the players are closer than this, capture
 	 * occured.
 	 */
 	this.captureRadius = 1e-3;
+	/**
+	 * The amount of directions the players can make.
+	 * 
+	 * Setting this to a higher value will allow the players to adjust their
+	 * trajectory more precisely but will also result in a higher computational
+	 * effort. Therefore don't set this value much higher than 50.
+	 * 
+	 * Basically this variable describes the amount of discretizations we will
+	 * make on the unit circle.
+	 * 
+	 * Default value is 50.
+	 */
+	this.controlResolution = 50;
 
 	this.evalKE = function(state, controls, stepsize) {
-		throw "To be implemented by subclasses.";
+		if (stepsize != null && !Array.isArray(stepsize)) {
+			var tmp = stepsize;
+			stepsize = [ tmp, tmp ];
+		}
+		
+		var newState = [];
+		
+		var dir = 2 * Math.PI * (controls[0] / this.controlResolution);
+		newState[0] = state[0] + stepsize[0] * Math.cos(dir);
+		newState[1] = state[1] + stepsize[0] * Math.sin(dir);
+		
+		dir = 2 * Math.PI * (controls[1] / this.controlResolution);
+		newState[2] = state[2] + stepsize[1] * Math.cos(dir);
+		newState[3] = state[3] + stepsize[1] * Math.sin(dir);
+		
+		return newState;
 	};
 
 	this.isTerminal = function(state) {
-		if (this.captureRadius >= 0) {
-			if (Array.isArray(state)) {
-				if (state.length == 4) {
-					var p = state.slice(0, 2);
-					var e = state.slice(2, 5);
-					return State.equals(p, e, this.captureRadius);
-				}
-			}
-		}
-		return false;
+		var p = state.slice(0, 2);
+		var e = state.slice(2, 5);
+		return State.equals(p, e, this.captureRadius);
 	};
 };
 

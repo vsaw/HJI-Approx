@@ -31,32 +31,13 @@
  * TODO: Document
  */
 var PE2GameSolver = function() {
-	/**
-	 * If true, players are allowed to stand still. Otherwise they have to make
-	 * a move.
-	 * 
-	 * By default players are allowed to stand still at one position.
-	 */
-	this.allowStandingStill;
+	
 	/**
 	 * Dampening factor computed from the time step size in order to make our
 	 * fixed point iteration a contraction which will converge because of the
 	 * banach fixed point theorem.
 	 */
 	this.beta;
-	/**
-	 * The amount of directions the players can make.
-	 * 
-	 * Setting this to a higher value will allow the players to adjust their
-	 * trajectory more precisely but will also result in a higher computational
-	 * effort. Therefore don't set this value much higher than 50.
-	 * 
-	 * Basically this variable describes the amount of discretizations we will
-	 * make on the unit circle.
-	 * 
-	 * Default value is 50.
-	 */
-	this.controlResolution = 50;
 	/**
 	 * The GameStateDomain for this game.
 	 * 

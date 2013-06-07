@@ -67,3 +67,7 @@ test("correct 1 dimension", function() {
 	ok(State.equals(x1, x2, 0.1));
 	ok(!State.equals(x1, x2, 0.001));
 });
+
+test("correct tolerance", function() {
+	ok(State.equals([ 0, 1, 0, 0 ], [ 6.123031769111886e-17, 1, 0, 0 ], 1e-9));
+});
