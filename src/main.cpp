@@ -53,6 +53,7 @@
  * - 0 0 5: [-2,2]^4, n = 24, n_c = 48 + 1, Vp = 2, Ve = 1, eps = 1e-3
  * - 0 0 6: [-2,2]^4, n = 14, n_c = 20 + 1, Vp = 1, Ve = 1.25, eps = 1e-3
  * - 0 0 7: [-2,2]^4 \ Ball(Center=0, rad=0.5), n = 16, n_c = 20 + 1, Vp = 2, Ve = 1, eps = 1e-5
+ * - 0 0 8: [-2,2]^4, n = 5, n_c = 8 + 1, Vp = 2, Ve = 1, eps = 1e-1
  * - 1 1 0: [-2,2]^4, n = 50, n_c = 48 + 1, Vp = 2, Ve = 1, eps = 1e-3
  * - 1 1 1: [-2,2]^4, n = 50, n_c = 48 + 1, Vp = 2, Ve = 1, eps = 1e-3
  * - 1 2 0: [-2,2]^4, n = 26, n_c = 36 + 1, Vp = 2, Ve = 1, eps = 1e-5
@@ -564,6 +565,78 @@ void experiment_0_0_7() {
 				"experiment_0_0_7.traj1.cmd");
 		printf("Time Steps till capture or abort: %d\n", timeSteps);
 	}
+
+	delete vfunc;
+	delete sq;
+	delete g;
+}
+
+void experiment_0_0_8() {
+	printf("==== experiment_0_0_8()\n");
+
+	decimal eps = 1e-1;
+
+	SquareDomain *sq = new SquareDomain(-2, 2, 5);
+	Game *g = new Game();
+
+	g->setDomain(sq);
+	g->setControlResolution(8);
+	g->setVelocity(Pursuer, 2);
+
+	cout << sq->toString() << endl;
+	printf("n = %d \nn_c = %d + %d\n", sq->getMaximalGridIndex()[0] + 1,
+			g->getControlResolution(), g->getAllowStandingStill());
+	printf("vP = %f \nvE = %f\n", g->getVelocity(Pursuer),
+			g->getVelocity(Evader));
+	cout << "width = " << sq->getMaximalResolutionWidth() << endl;
+	cout << "timeStepSize = " << g->getTimeStepSize() << endl;
+	cout << "eps = " << eps << endl;
+	printf("max Iterations: %d\n", g->getMaxIterations());
+	printf("max Time Steps for Trajectory Plots: %d\n", g->getMaxTimeSteps());
+
+	ValueFunction *vfunc;
+	if (util_file_exists("experiment_0_0_8.vfunc")) {
+		vfunc = new ValueFunction(sq, "experiment_0_0_8.vfunc");
+	} else {
+		vfunc = g->computeValueFunction(eps);
+		cout << "  finished with " << vfunc->getIterations() << " iterations"
+				<< endl;
+		vfunc->persist("experiment_0_0_8.vfunc");
+	}
+
+#if DEBUG
+	assert_ValueFuntion_isSymmetrical(vfunc);
+#endif
+
+	// State x[] = { 0.0, 0.0, 0.0, 0.0 };
+	// if (!util_file_exists("experiment_0_0_8.cmd")
+	// 		|| !util_file_exists("experiment_0_0_8.dat")) {
+	// 	vfunc->toGnuPlot("experiment_0_0_8.cmd", "experiment_0_0_8.dat",
+	// 			Pursuer, x, true);
+	// }
+
+	// x[0] = -2;
+	// x[1] = -2;
+	// printf("Plotting trajectory for state:\n");
+	// util_print_State(x);
+	// unsigned int timeSteps = -1;
+	// if (!util_file_exists("experiment_0_0_8.traj1")) {
+	// 	timeSteps = g->plotTrajectories(vfunc, x, "experiment_0_0_8.traj1",
+	// 			"experiment_0_0_8.traj1.cmd");
+	// 	printf("Time Steps till capture or abort: %d\n", timeSteps);
+	// }
+
+	// x[0] = -1.8;
+	// x[1] = -1.8;
+	// x[2] = 0.5;
+	// x[3] = -1.6;
+	// printf("Plotting trajectory for state:\n");
+	// util_print_State(x);
+	// if (!util_file_exists("experiment_0_0_8.traj2")) {
+	// 	timeSteps = g->plotTrajectories(vfunc, x, "experiment_0_0_8.traj2",
+	// 			"experiment_0_0_8.traj2.cmd");
+	// 	printf("Time Steps till capture or abort: %d\n", timeSteps);
+	// }
 
 	delete vfunc;
 	delete sq;
@@ -1194,6 +1267,8 @@ int main(int argc, char *argv[]) {
 			experiment_0_0_6();
 		else if (isExperiment(argv, 0, 0, 7))
 			experiment_0_0_7();
+		else if (isExperiment(argv, 0, 0, 8))
+			experiment_0_0_8();
 		else if (isExperiment(argv, 1, 1, 0))
 			experiment_1_1_0();
 		else if (isExperiment(argv, 1, 1, 1))
