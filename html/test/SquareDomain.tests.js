@@ -194,3 +194,39 @@ test("is feasible", function() {
 		ok(!sq.isFeasible(offGrid[i]), i);
 	}
 });
+
+test("equals", function() {
+	var sq1 = new SquareDomain(0, 1, 11);
+	var sq2 = new SquareDomain(0, 1, 11);
+
+	ok(sq1.equals(sq2));
+	ok(sq2.equals(sq1));
+
+	ok(!sq1.equals(1));
+	ok(!sq2.equals(null));
+	ok(!sq2.equals(undefined));
+});
+
+test("not equals segments", function() {
+	var sq1 = new SquareDomain(0, 1, 12);
+	var sq2 = new SquareDomain(0, 1, 11);
+
+	ok(!sq1.equals(sq2));
+	ok(!sq2.equals(sq1));
+
+	ok(!sq1.equals(1));
+	ok(!sq2.equals(null));
+	ok(!sq2.equals(undefined));
+});
+
+test("not equals range", function() {
+	var sq1 = new SquareDomain(0, 1.2, 11);
+	var sq2 = new SquareDomain(0, 1, 11);
+
+	ok(!sq1.equals(sq2));
+	ok(!sq2.equals(sq1));
+
+	ok(!sq1.equals(1));
+	ok(!sq2.equals(null));
+	ok(!sq2.equals(undefined));
+});

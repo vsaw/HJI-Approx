@@ -83,6 +83,33 @@ function ValueFunction(domain) {
 	this.values = [];
 
 	/**
+	 * Determines deep equality for a given ValueFunction.
+	 *
+	 * @param vfunc
+	 *            The object to determine equality with.
+	 *
+	 * @return true if they are equal, false otherwise.
+	 */
+	this.equals = function(vfunc) {
+		if (vfunc instanceof ValueFunction) {
+			if (this === vfunc) {
+				return true;
+			}
+
+			if (this.domain == null && vfunc.domain != null) {
+				return false;
+			} else {
+				if (!this.domain.equals(vfunc.domain)) {
+					return false;
+				}
+			}
+
+			return JSON.stringify(this.values) === JSON.stringify(vfunc.values);
+		}
+		return false;
+	};
+
+	/**
 	 * Evaluation the ValueFunction for the given state.
 	 * 
 	 * @param x
@@ -156,7 +183,7 @@ function ValueFunction(domain) {
 	 *            The index
 	 * @param value
 	 *            The new Value.
-	 *            
+	 *
 	 * The values set here are used to evaluate the value of the function. The
 	 * value of a state is linearly approximated by the values of its
 	 * surrounding GridCells.

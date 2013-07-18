@@ -137,3 +137,83 @@ test("eval", function() {
 	equal(v.eval(p[0]), 0);
 	equal(v.eval(p[2]), 0.81);
 });
+
+test("equals empty", function() {
+	var n = 10;
+	var sq = new SquareDomain(0, 1, n + 1);
+	var v1 = new ValueFunction(sq);
+	var v2 = new ValueFunction(sq);
+
+	// Equals has to be symmetric
+	ok(v1.equals(v2));
+	ok(v2.equals(v1));
+
+	ok(!v1.equals(null));
+	ok(!v2.equals(21));
+	ok(!v1.equals(undefined));
+	ok(!v2.equals("bacon!"));
+	ok(!v1.equals([1,3,4,5,6]));
+});
+
+test("equals non empty", function() {
+	var n = 10;
+	var sq = new SquareDomain(0, 1, n + 1);
+	var v1 = new ValueFunction(sq);
+	var v2 = new ValueFunction(sq);
+
+	// New ValueFunctions must be equal to the zero function.
+	for ( var i0 = 0; i0 <= n; i0++) {
+		for ( var i1 = 0; i1 <= n; i1++) {
+			for ( var i2 = 0; i2 <= n; i2++) {
+				for ( var i3 = 0; i3 <= n; i3++) {
+					var index = [ i0, i1, i2, i3 ];
+					v1.setValue(index, i0 + i1 + i2 + i3);
+					v2.setValue(index, v1.getValue(index));
+				}
+			}
+		}
+	}
+
+	// Equals has to be symmetric
+	ok(v1.equals(v2));
+	ok(v2.equals(v1));
+});
+
+test("not equals one empty one non empty", function() {
+	var n = 10;
+	var sq = new SquareDomain(0, 1, n + 1);
+	var v1 = new ValueFunction(sq);
+	var v2 = new ValueFunction(sq);
+
+	v1.setValue([1,2,3,4], 1);
+
+	// Equals has to be symmetric
+	ok(!v1.equals(v2));
+	ok(!v2.equals(v1));
+});
+
+test("not equals non empty", function() {
+	var n = 10;
+	var sq = new SquareDomain(0, 1, n + 1);
+	var v1 = new ValueFunction(sq);
+	var v2 = new ValueFunction(sq);
+
+	// New ValueFunctions must be equal to the zero function.
+	for ( var i0 = 0; i0 <= n; i0++) {
+		for ( var i1 = 0; i1 <= n; i1++) {
+			for ( var i2 = 0; i2 <= n; i2++) {
+				for ( var i3 = 0; i3 <= n; i3++) {
+					var index = [ i0, i1, i2, i3 ];
+					v1.setValue(index, i0 + i1 + i2 + i3);
+					v2.setValue(index, v1.getValue(index));
+				}
+			}
+		}
+	}
+
+	v2.setValue([1,2,3,4], 0);
+
+	// Equals has to be symmetric
+	ok(!v1.equals(v2));
+	ok(!v2.equals(v1));
+});

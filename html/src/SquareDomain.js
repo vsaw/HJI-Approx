@@ -80,6 +80,29 @@ function SquareDomain(minArg, maxArg, nodesArg) {
 	this.segments = nodesArg - 1;
 
 	/**
+	 * Determines deep equality for a given SquareDomain.
+	 *
+	 * @param vfunc
+	 *            The object to determine equality with.
+	 *
+	 * @return true if they are equal, false otherwise.
+	 */
+	this.equals = function(obj) {
+		if (this === obj) {
+			return true;
+		}
+
+		if (obj instanceof SquareDomain) {
+			var sameMin = this.min == obj.min;
+			var sameMax = this.max == obj.max;
+			var sameSegments = this.segments == obj.segments;
+			return sameMax && sameMin && sameSegments;
+		}
+
+		return false;
+	};
+
+	/**
 	 * Returns the Cell Index of the nearest corner for state x.
 	 * 
 	 * @param x
