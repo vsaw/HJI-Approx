@@ -117,9 +117,9 @@ test("eval", function() {
 	var n = 10;
 	var sq = new SquareDomain(0, 1, n + 1);
 	var v = new ValueFunction(sq);
-	
+
 	// New ValueFunctions must be equal to the zero function.
-	for ( var i0 = 0; i0 <= n; i0++) { 
+	for ( var i0 = 0; i0 <= n; i0++) {
 		for ( var i1 = 0; i1 <= n; i1++) {
 			for ( var i2 = 0; i2 <= n; i2++) {
 				for ( var i3 = 0; i3 <= n; i3++) {
@@ -152,7 +152,7 @@ test("equals empty", function() {
 	ok(!v2.equals(21));
 	ok(!v1.equals(undefined));
 	ok(!v2.equals("bacon!"));
-	ok(!v1.equals([1,3,4,5,6]));
+	ok(!v1.equals([ 1, 3, 4, 5, 6 ]));
 });
 
 test("equals non empty", function() {
@@ -185,7 +185,7 @@ test("not equals one empty one non empty", function() {
 	var v1 = new ValueFunction(sq);
 	var v2 = new ValueFunction(sq);
 
-	v1.setValue([1,2,3,4], 1);
+	v1.setValue([ 1, 2, 3, 4 ], 1);
 
 	// Equals has to be symmetric
 	ok(!v1.equals(v2));
@@ -211,7 +211,7 @@ test("not equals non empty", function() {
 		}
 	}
 
-	v2.setValue([1,2,3,4], 0);
+	v2.setValue([ 1, 2, 3, 4 ], 0);
 
 	// Equals has to be symmetric
 	ok(!v1.equals(v2));

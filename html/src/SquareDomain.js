@@ -81,10 +81,10 @@ function SquareDomain(minArg, maxArg, nodesArg) {
 
 	/**
 	 * Determines deep equality for a given SquareDomain.
-	 *
+	 * 
 	 * @param vfunc
 	 *            The object to determine equality with.
-	 *
+	 * 
 	 * @return true if they are equal, false otherwise.
 	 */
 	this.equals = function(obj) {
@@ -364,5 +364,9 @@ function SquareDomain(minArg, maxArg, nodesArg) {
 			}
 		}
 		return true;
+	};
+
+	this.isFeasibleIndex = function(x) {
+		return this.isFeasible(this.getPoint(x));
 	};
 }

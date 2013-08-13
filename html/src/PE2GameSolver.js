@@ -31,51 +31,7 @@
  * TODO: Document
  */
 var PE2GameSolver = function() {
-	
-	/**
-	 * Dampening factor computed from the time step size in order to make our
-	 * fixed point iteration a contraction which will converge because of the
-	 * banach fixed point theorem.
-	 */
-	this.beta;
-	/**
-	 * The GameStateDomain for this game.
-	 * 
-	 * This domain is used in various placed all over the class and defined
-	 * where the game takes place.
-	 */
-	this.domain;
-	/**
-	 * The Game that describes its dynamics and terminal states.
-	 */
-	this.game;
-	/**
-	 * The maximal amount of valid iterations in the computation of the value
-	 * function.
-	 * 
-	 * If computation of the value function does not converge within
-	 * maxIterations. The iteration will be stopped and considered unsuccessful.
-	 */
-	this.maxIterations;
-	/**
-	 * The maximal amount of valid iterations in the computation of the
-	 * trajectories.
-	 * 
-	 * If computation of the trajectories does not converge within maxTimeSteps,
-	 * the value of the game will be considered infinite and catch does not
-	 * occur.
-	 */
-	this.maxTimeSteps;
-	/**
-	 * The step size.
-	 * 
-	 * Smaller values will lead to a better approximation of the value function
-	 * but also to higher computational costs.
-	 * 
-	 * Please note that to ensure convergence of the approximation scheme we
-	 * need to pick the step size smaller than the diameters of the grid cells.
-	 */
-	this.timeStepSize;
+
 	/**
 	 * The velocity of the evader.
 	 * 
@@ -88,29 +44,128 @@ var PE2GameSolver = function() {
 	 * Default value is 1
 	 */
 	this.velocityPursuer = 1;
+	this.maxIterations = 150;
 
-	/**
-	 * This will calculate the value function.
-	 * 
-	 * @param tol
-	 *            The tolerance for the convergence.
-	 * 
-	 * @returns The value function for this game.
-	 * 
-	 * This computation will disregard the initial state and compute really the
-	 * complete value for all possible states! The returning value function will
-	 * be defined at each possible states.
-	 * 
-	 * Use with care as it will result in massive computational effort.
-	 * 
-	 * @see ValueFunction
-	 */
 	this.computeValueFunction = function(tolerance) {
 		if (tolerance <= 0) {
 			return null;
 		}
 
-		throw "To be implemented by subclasses.";
+		var changed = true;
+		var iterationCounter = 0;
+
+		/*
+		 * In this implementation we have two value functions. The reason being,
+		 * if I only have one, I immediately feed back the new values into the
+		 * same iteration loop. I believe this breaks the fixed point iteration.
+		 */
+		var vfunc = new ValueFunction(this.domain);
+		var vfuncNext = new ValueFunction(this.domain);
+		var i = 0;
+		var maxIndex = this.domain.getMaximalGridIndex(4);
+
+		while (changed && iterationCounter < this.maxIterations) {
+			iterationCounter++;
+
+			// Loop through the grid points of the value function as mentioned
+			// on page 195 of the paper!
+			for (i = 0; i <= maxIndex[0] / 2; i++) {
+				for ( var j = 0; j <= maxIndex[1] / 2; j++) {
+					for ( var k = 0; k <= maxIndex[2]; k++) {
+						for ( var l = 0; l <= maxIndex[3]; l++) {
+
+							// If the index is not feasible for the given
+							// domain, skip the execution of the loop.
+							if (!this.domain.isFeasibleIndex([ i, j, k, l ])) {
+								continue;
+							}
+
+							var oldValue = vfunc.getValue([ i, j, k, l ]);
+
+							// Before we compute the new Value check if the
+							// state is terminal, as this saves us a lot of
+							// trouble and computing power.
+							var newValue = 0;
+							if (!this.game.isTerminal([ i, j, k, l ])) {
+								newValue = this.computeValueOnGrid(vfunc, [ i,
+										j, k, l ]);
+							}
+
+							// Check if the value of the function at this
+							// gridindex changed above tol. If it did not, we
+							// can leave the outer while-loop.
+							if (!changed) {
+								changed = Math.abs(oldValue - newValue) > tolerance;
+							}
+
+							vfuncNext.setValue([ i, j, k, l ], newValue);
+
+							// XXX: This Symmetry does only work in the standard
+							// square domain.
+							// TODO: Symmetry in ValueFunction There must be
+							// some kind of way to figure out how to push the
+							// symmetry to the value function!
+							vfuncNext.setValue([ i, maxIndex[1] - j, k,
+									maxIndex[3] - l ], newValue);
+
+						}
+					}
+				}
+			}
+
+			// XXX: This does only work in the standard square domain.
+			// Copy the last line as suggested by Cristiane and Falcone.
+			// Remember that we stepped out of the i-loop therefore i has the
+			// value
+			// maxIndex[0] / 2 + 1
+			for ( var j = 0; j <= maxIndex[1]; j++) {
+				for ( var k = 0; k <= maxIndex[2]; k++) {
+					for ( var l = 0; l <= maxIndex[3]; l++) {
+						// If the index is not feasible for the given domain,
+						// skip the execution of the loop.
+						if (!this.domain.isFeasibleIndex([ i - 1, j, k, l ])) {
+							continue;
+						}
+
+						var oldVal = vfuncNext.getValue([ i - 1, j, k, l ]);
+						vfuncNext.setValue([ i, maxIndex[1] - j,
+								maxIndex[2] - k, maxIndex[3] - l ], oldVal);
+					}
+				}
+			}
+
+			/*
+			 * Change the value functions as we finished our iteration.
+			 * 
+			 * So in the next iteration the updated values will be our baseline
+			 * and the second function will be updated accordingly.
+			 */
+			var vfuncTemp = vfunc;
+			vfunc = vfuncNext;
+			vfuncNext = vfuncTemp;
+		}
+
+		// XXX: Copy the rest of the symmetry in the value function!
+		for (i = 0; i <= maxIndex[0] / 2; i++) {
+			for ( var j = 0; j <= maxIndex[1]; j++) {
+				for ( var k = 0; k <= maxIndex[2]; k++) {
+					for ( var l = 0; l <= maxIndex[3]; l++) {
+						// If the index is not feasible for the given domain,
+						// skip the execution of the loop.
+						if (!this.domain.isFeasibleIndex([ i, j, k, l ])) {
+							continue;
+						}
+
+						var oldVal = vfuncNext.getValue([ i, j, k, l ]);
+						vfuncNext.setValue([ maxIndex[0] - i, maxIndex[1] - j,
+								maxIndex[2] - k, maxIndex[3] - l ], oldVal);
+					}
+				}
+			}
+		}
+
+		vfuncNext.iterations = iterationCounter;
+		return vfuncNext;
 	};
 
 	/**
@@ -127,6 +182,118 @@ var PE2GameSolver = function() {
 	 */
 	this.computeTrajectories = function(valueFunction, state) {
 		throw "To be implemented by subclasses.";
+	};
+
+	/**
+	 * Computes the value of the ValueFunction at given State which is located
+	 * on the grid of the GameStateDomain.
+	 * 
+	 * This value is used for the internal calculation of the value function.
+	 * Basically it corresponds to the first line of fully discrete
+	 * approximation scheme for the constrained case by Cristiane & Falcone on
+	 * Page 182 of the paper.
+	 * 
+	 * @param vfunc
+	 *            The value function to approximate.
+	 * @param x
+	 *            The index of the point to approximate.
+	 * 
+	 * @returns The value.
+	 */
+	this.computeValueOnGrid = function(vfunc, index) {
+		// The value at point x.
+		var value = Number.NEGATIVE_INFINITY;
+
+		// Some variables I extracted from the loop to check if this would
+		// reduce the memory footprint.
+		var newState = [];
+		var blankoState = [];
+		var newValue = 0;
+
+		// Loop through all the control options of P
+		var startControl = this.game.allowStandingStill ? 0 : 1;
+		for ( var evaderControl = startControl; evaderControl <= this.game.controlResolution; evaderControl++) {
+
+			// Check if the current control option is admissible if this
+			// control is admissible the pursuer variables will already be
+			// stored in newState. As for the evader, newstate will just
+			// contain his original position as if he stood still.
+			if (this.isAdmissibleControl(index, blankoState, "Evader",
+					evaderControl)) {
+
+				// This is the value the evader picks. We did not yet maximize
+				// the pursuers controls so this might be different from the
+				// actual value.
+				var evaderValue = Number.POSITIVE_INFINITY;
+
+				// New check all the options E has
+				for ( var pursuerControl = 1; pursuerControl <= this.game.controlResolution; pursuerControl++) {
+
+					// Check if E control is admissible
+					// Since the two players can't interfere with each others
+					// decisions and we store the valid control changes of
+					// Pursuer and evader in newState we have a valid new state
+					// if the current control of the Evader is also valid.
+					// Therefore it is not necessary anymore to reevaluate the
+					// kinematic equations.
+					if (this.isAdmissibleControl(blankoState, newState,
+							Pursuer, pursuerControl)) {
+
+						// Evaluate the value of the value function according to
+						// the first line of the approximation scheme.
+						newValue = beta * vfunc.eval(newState) + 1 - beta;
+
+						// ve = min { ve, computeValueOnGrid( state after
+						// control change ) )
+						// if ve has a new value make set ce's control to the
+						// current
+						if (evaderValue > newValue) {
+							evaderValue = newValue;
+						}
+					}
+				}
+
+				// After Checking every option of the evader set the value
+				// v = max { v, ve }
+				// If the value has changed set the control of pursuer.
+				if (value < evaderValue) {
+					value = evaderValue;
+				}
+			}
+		}
+
+		return value;
+	};
+
+	/**
+	 * Checks if the given control is admissible for the player at the current
+	 * state of the game.
+	 * 
+	 * If it is feasible the new state after the control change will be stored
+	 * in the newState variable.
+	 * 
+	 * @param index
+	 *            The current state
+	 * @param newState
+	 *            The new state after the player has made a move.
+	 * @param player
+	 *            The player who wants to move.
+	 * @param control
+	 *            The direction he wants to move to.
+	 * 
+	 * @returns True if it is a valid move; otherwise false.
+	 * 
+	 * @see GameStateDomain::isFeasible
+	 */
+	this.isAdmissibleControl = function(index, newState, player, control) {
+		if (player == "Pursuer") {
+			newState = this.game.evalKE(index, [ control, 0 ],
+					this.timeStepSize);
+		} else {
+			newState = this.game.evalKE(index, [ 0, control ],
+					this.timeStepSize);
+		}
+		return this.domain.isFeasible(newState, player);
 	};
 };
 

@@ -84,10 +84,10 @@ function ValueFunction(domain) {
 
 	/**
 	 * Determines deep equality for a given ValueFunction.
-	 *
+	 * 
 	 * @param vfunc
 	 *            The object to determine equality with.
-	 *
+	 * 
 	 * @return true if they are equal, false otherwise.
 	 */
 	this.equals = function(vfunc) {
@@ -183,7 +183,7 @@ function ValueFunction(domain) {
 	 *            The index
 	 * @param value
 	 *            The new Value.
-	 *
+	 * 
 	 * The values set here are used to evaluate the value of the function. The
 	 * value of a state is linearly approximated by the values of its
 	 * surrounding GridCells.

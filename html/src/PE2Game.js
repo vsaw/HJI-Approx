@@ -59,22 +59,24 @@ var PE2Game = function() {
 	 */
 	this.controlResolution = 50;
 
+	this.evaderVelocity;
+
 	this.evalKE = function(state, controls, stepsize) {
 		if (stepsize != null && !Array.isArray(stepsize)) {
 			var tmp = stepsize;
 			stepsize = [ tmp, tmp ];
 		}
-		
+
 		var newState = [];
-		
+
 		var dir = 2 * Math.PI * (controls[0] / this.controlResolution);
 		newState[0] = state[0] + stepsize[0] * Math.cos(dir);
 		newState[1] = state[1] + stepsize[0] * Math.sin(dir);
-		
+
 		dir = 2 * Math.PI * (controls[1] / this.controlResolution);
 		newState[2] = state[2] + stepsize[1] * Math.cos(dir);
 		newState[3] = state[3] + stepsize[1] * Math.sin(dir);
-		
+
 		return newState;
 	};
 

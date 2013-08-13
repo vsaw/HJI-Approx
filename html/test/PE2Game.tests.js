@@ -44,9 +44,9 @@ test("evalKE", function() {
 	 * Checks if two states are equal within a certain tolerance
 	 * 
 	 * @param actual
-	 * 		The actual state
+	 *            The actual state
 	 * @param expected
-	 * 		The expected state
+	 *            The expected state
 	 */
 	var sEqu = function(actual, expected) {
 		if (!State.equals(expected, actual, 1e-9)) {
