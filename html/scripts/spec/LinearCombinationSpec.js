@@ -41,7 +41,7 @@ describe("LinearCombination", function() {
 		var lc = new LinearCombination();
 		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			expect(lc.getPoint(i)).toBeNull();
-			expect(lc.getFactor(i)).toBeCloseTo(1, 1e-9);
+			expect(lc.getFactor(i)).toBeCloseTo(1, 6);
 		}
 	});
 
