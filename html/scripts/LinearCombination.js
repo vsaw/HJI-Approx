@@ -52,6 +52,13 @@ var LinearCombination = function() {
 	 * An array of states being the points of the linear combination.
 	 */
 	var points = [];
+	/**
+	 * An array containing the indexes of the points stored in the points array.
+	 * 
+	 * The index number "i" is the same as calling the
+	 * getPointIndex(getPoint(i)) but is faster in runtime.
+	 */
+	var indexes = [];
 
 	for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 		factors[i] = 1;
@@ -103,6 +110,21 @@ var LinearCombination = function() {
 	};
 
 	/**
+	 * Returns the index of the i-th point of this linear combination.
+	 * 
+	 * The index number "i" is the same as calling the
+	 * getPointIndex(getPoint(i)) but is faster in runtime.
+	 * 
+	 * @param i
+	 *            The index number of the index in this linear combination.
+	 * 
+	 * @returns NULL if the point is NULL.
+	 */
+	this.getIndex = function(index) {
+		return indexes[index];
+	};
+
+	/**
 	 * Returns the i-th point.
 	 * 
 	 * The point might be null if not used in the linear combination. However it
@@ -136,6 +158,22 @@ var LinearCombination = function() {
 	 */
 	this.setFactor = function(index, factor) {
 		factors[index] = factor;
+	};
+
+	/**
+	 * Sets the i-th GridPointIndex of the linear combination.
+	 * 
+	 * @param i
+	 *            The index
+	 * @param x
+	 *            The new GridPointIndex.
+	 * 
+	 * @throws EXCEPTION_INDEX_OUT_OF_BOUNDS
+	 *             i was not a valid index. Must be 0 <= i <=
+	 *             LINEAR_COMBINATION_LENGTH
+	 */
+	this.setIndex = function(index, number) {
+		indexes[index] = number;
 	};
 
 	/**
