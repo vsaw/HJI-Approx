@@ -35,6 +35,7 @@
 var GameStateDomain = require('../GameStateDomain.js');
 
 describe("GameStateDomain", function() {
+
 	it("can clone points", function() {
 		var p1 = [ 0.0, 0.1, 0.2, 0.3 ];
 		var clone = GameStateDomain.cloneState(p1);
