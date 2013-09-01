@@ -80,6 +80,10 @@ GameStateDomain.equals = function(s1, s2, eps) {
 	}
 
 	for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+		if (isNaN(s1[i]) || isNaN(s2[i])) {
+			return false;
+		}
+
 		if (Math.abs(s1[i] - s2[i]) > eps) {
 			return false;
 		}

@@ -56,4 +56,10 @@ describe("GameStateDomain", function() {
 		expect(GameStateDomain.equals(p1, p3)).toBe(false);
 		expect(GameStateDomain.equals(p1, p4, 0.1)).toBe(false);
 	});
+
+	it("tells that NaN is not equals", function() {
+		expect(
+				GameStateDomain.equals([ 0.5, 0.5, 0.5, 0.5 ], [ NaN, NaN, NaN,
+						NaN ], 0.1)).toBe(false);
+	});
 });
