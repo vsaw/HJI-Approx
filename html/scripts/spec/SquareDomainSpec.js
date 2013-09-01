@@ -70,4 +70,35 @@ describe("SquareDomain", function() {
 		checkConvexDecomposition([ -1.0, -1.0, -1.0, -1.0 ], sq);
 		checkConvexDecomposition([ 0.5, 0.5, 0.5, 0.5 ], sq);
 	});
+
+	it("knows grid indexes", function() {
+		var sq = new SquareDomain(-1, 1, 21);
+
+		var points = [ [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.1, 0.0 ],
+				[ 0.0, 0.0, 0.1, 0.1 ], [ 1.0, 0.5, 0.0, 1.0 ],
+				[ -1.0, -1.0, -0.5, -0.2 ], [ -1.0, -1.0, -1.0, -1.0 ] ];
+
+		var index = [ [ 10, 10, 10, 10 ], [ 10, 10, 11, 10 ],
+				[ 10, 10, 11, 11 ], [ 20, 15, 10, 20 ], [ 0, 0, 5, 8 ],
+				[ 0, 0, 0, 0 ] ];
+
+		for ( var i = 0; i < points.length; i++) {
+			var ret = sq.getGridIndex(points[i]);
+			for ( var j = 0; j < 4; j++) {
+				expect(ret[j]).toBe(index[i][j]);
+			}
+		}
+	});
+
+	it("knows the maximal grid index", function() {
+		var param = [ 10, 20, 2 ];
+
+		for ( var outer = 0; outer < param.length; outer++) {
+			var sq = new SquareDomain(0, 1, param[outer]);
+			var ind = sq.getMaximalGridIndex();
+			for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+				expect(param[outer] - 1).toBeCloseTo(ind[i], 6);
+			}
+		}
+	});
 });

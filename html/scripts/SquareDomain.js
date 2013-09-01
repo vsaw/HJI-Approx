@@ -53,9 +53,17 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	 */
 	var max = maxPos;
 	/**
+	 * The amount of segments of the domain in one dimension.
+	 * 
+	 * Both dimensions will have equally "segments" segments. Please note that
+	 * if one dimension has "segments" segments, it has "segments + 1" grid
+	 * points.
+	 */
+	var segments = numNodes - 1;
+	/**
 	 * The width of one segment. Computed out of max - min / segments.
 	 */
-	var width = (max - min) / (numNodes - 1);
+	var width = (max - min) / segments;
 
 	/**
 	 * Returns the cell index of the upper bound.
@@ -240,6 +248,25 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 			index[i] = Math.round((x[i] - min) / width);
 		}
 		return index;
+	};
+
+	/**
+	 * Returns the maximal valid GridPointIndex.
+	 * 
+	 * This means that valid grid cell indices range from [0,0,0,0] to
+	 * [a,b,c,d].
+	 * 
+	 * Do not unset the value returned from this function!
+	 * 
+	 * @returns The maximal valid grid index.
+	 */
+	this.getMaximalGridIndex = function() {
+		// Initialize the maximal grid index.
+		var maximalGridIndex = [];
+		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			maximalGridIndex[i] = segments;
+		}
+		return maximalGridIndex;
 	};
 };
 
