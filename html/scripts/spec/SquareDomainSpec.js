@@ -129,4 +129,23 @@ describe("SquareDomain", function() {
 		var s4 = sq.getPoint(c2);
 		expect(GameStateDomain.equals(p4, s4, 1e-9)).toBe(true);
 	});
+
+	it("knows if its a grid point", function() {
+		var sq = new SquareDomain(0, 1, 11);
+
+		var onGrid = [ [ 0.0001, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.1, 0.0 ],
+				[ 0.0, 0.0001, 0.1, 0.1 ], [ 0.0, 0.5, 1.0, 1.0 ],
+				[ 1.0, 0.99999, 1.0, 1.0 ] ];
+		var offGrid = [ [ 0.02, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, -0.1, 0.0 ],
+				[ 0.0, 0.0, 0.1, 0.87 ], [ 0.0, 0.55, 1.0, 1.0 ],
+				[ 1.0, 1.0, 1.1, 1.0 ] ];
+
+		for ( var i = 0; i < 5; i++) {
+			expect(sq.isGridPoint(onGrid[i])).toBe(true);
+		}
+
+		for ( var i = 0; i < 5; i++) {
+			expect(sq.isGridPoint(offGrid[i])).toBe(false);
+		}
+	});
 });

@@ -290,6 +290,37 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 
 		return s;
 	};
+
+	/**
+	 * Determines if the given state is located on the discrete grid of the
+	 * domain.
+	 * 
+	 * In this implementation it is considered a grid point if its position
+	 * differs from the nearest GridPoint by at most 1% of the cell width.
+	 * 
+	 * @param x
+	 *            The state.
+	 * 
+	 * @returns True if it is part of the discrete grid; otherwise false.
+	 */
+	this.isGridPoint = function(x) {
+		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			// For performance reasons we do the feasibility check on the fly.
+			if (x[i] < min || x[i] > max) {
+				return false;
+			}
+
+			// Compute the unrounded GridPointIndex.
+			var index = (x[i] - min) / width;
+			// Then check the distance from the unrounded index to the rounded.
+			// If this differ by more than 1% width we're not an GridPoint.
+			var dist = Math.abs(index - Math.round(index));
+			if (dist > 0.01) {
+				return false;
+			}
+		}
+		return true;
+	};
 };
 
 module.exports = SquareDomain;
