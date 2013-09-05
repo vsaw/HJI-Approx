@@ -268,6 +268,28 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 		}
 		return maximalGridIndex;
 	};
+
+	/**
+	 * Returns the point for the given index.
+	 * 
+	 * The index parameter will be be checked for feasibility. Therefore this
+	 * function will return a point even if the given index is not valid. It is
+	 * the responsibility of the caller to ensure that the given index is valid.
+	 * 
+	 * @param index
+	 *            The index of the point.
+	 * 
+	 * @returns The point with the given index.
+	 */
+	this.getPoint = function(index) {
+		var s = [];
+
+		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			s[i] = min + (index[i] * width);
+		}
+
+		return s;
+	};
 };
 
 module.exports = SquareDomain;

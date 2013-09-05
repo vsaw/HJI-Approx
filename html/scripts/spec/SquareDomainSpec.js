@@ -101,4 +101,32 @@ describe("SquareDomain", function() {
 			}
 		}
 	});
+
+	it("knows the point", function() {
+		var sq = new SquareDomain(0, 1, 11);
+
+		var c0 = [ 0, 0, 0, 0 ];
+		var p0 = [ 0.0, 0.0, 0.0, 0.0 ];
+		var s0 = sq.getPoint(c0);
+		expect(GameStateDomain.equals(p0, s0)).toBe(true);
+
+		var p1 = [ 0.5, 0.4, 0.3, 0.0 ];
+		var c1 = [ 5, 4, 3, 0 ];
+		var s1 = sq.getPoint(c1);
+		expect(GameStateDomain.equals(p1, s1, 1e-9)).toBe(true);
+
+		var p2 = [ 0.1, 0.1, 0.1, 0.0 ];
+		var c2 = [ 1, 1, 1, 0 ];
+		var s2 = sq.getPoint(c2);
+		expect(GameStateDomain.equals(p2, s2, 1e-9)).toBe(true);
+
+		sq = new SquareDomain(-1, 1, 11);
+		var p3 = [ -1.0, -1.0, -1.0, -1.0 ];
+		var s3 = sq.getPoint(c0);
+		expect(GameStateDomain.equals(p3, s3)).toBe(true);
+
+		var p4 = [ -0.8, -0.8, -0.8, -1.0 ];
+		var s4 = sq.getPoint(c2);
+		expect(GameStateDomain.equals(p4, s4, 1e-9)).toBe(true);
+	});
 });
