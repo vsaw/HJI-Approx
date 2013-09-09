@@ -103,4 +103,9 @@ describe("LinearCombination", function() {
 		var actual = lc.eval();
 		expect(GameStateDomain.equals(expected, actual, 1e-4)).toBe(true);
 	});
+
+	it("knows its size", function() {
+		var lc = new LinearCombination();
+		expect(lc.getSize()).toBe(Definitions.LINEAR_COMBINATON_LENGTH);
+	});
 });

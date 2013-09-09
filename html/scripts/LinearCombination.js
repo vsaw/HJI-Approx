@@ -145,6 +145,15 @@ var LinearCombination = function() {
 	};
 
 	/**
+	 * Returns the length of the linear combination.
+	 * 
+	 * @returns the length of the linear combination.
+	 */
+	this.getSize = function() {
+		return Definitions.LINEAR_COMBINATON_LENGTH;
+	};
+
+	/**
 	 * Sets the i-th factor of the linear combination.
 	 * 
 	 * @param i
