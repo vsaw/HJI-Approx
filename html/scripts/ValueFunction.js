@@ -84,6 +84,43 @@ var ValueFunction = function(dom) {
 	var values = [];
 
 	/**
+	 * Determines if the SquareDomain is equal to "x"
+	 * 
+	 * @param x
+	 *            The object to compare it to.
+	 * 
+	 * @returns True if it is equal to "x", false otherwise.
+	 * 
+	 * They are regarded as equal if "x" has an equal domain and the same
+	 * values.
+	 */
+	this.equals = function(x) {
+		if (this === x) {
+			return true;
+		}
+
+		if (x instanceof ValueFunction) {
+			if (domain != null) {
+				if (!domain.equals(x.getDomain())) {
+					return false;
+				}
+			} else {
+				if (x.getDomain() != null) {
+					return null;
+				}
+			}
+
+			for ( var i = 0; i < values.length; i++) {
+				if (x.getValue(i) != values[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	};
+
+	/**
 	 * Evaluation the ValueFunction for the given state.
 	 * 
 	 * @param x

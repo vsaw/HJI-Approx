@@ -36,7 +36,7 @@ var Definitions = require('../Definitions.js');
 var SquareDomain = require('../SquareDomain.js');
 var ValueFunction = require('../ValueFunction.js');
 
-describe("SquareDomain", function() {
+describe("ValueFunctionSpec", function() {
 
 	it("can get the default value", function() {
 		var n = 10;
@@ -155,5 +155,50 @@ describe("SquareDomain", function() {
 		var v = new ValueFunction(sq);
 
 		expect(v.getDomain()).toBe(sq);
+	});
+
+	it("equals himself no domain", function() {
+		var sq = new SquareDomain(0, 1, 10);
+		var vfunc1 = new ValueFunction(sq);
+
+		expect(vfunc1.equals(vfunc1)).toBe(true);
+	});
+
+	it("equals himself", function() {
+		var vfunc1 = new ValueFunction(null);
+
+		expect(vfunc1.equals(vfunc1)).toBe(true);
+	});
+
+	it("empty functions are equal no domain", function() {
+		var vfunc1 = new ValueFunction(null);
+		var vfunc2 = new ValueFunction(null);
+
+		expect(vfunc1.equals(vfunc2)).toBe(true);
+	});
+
+	it("empty functions are not equal", function() {
+		var sq = new SquareDomain(0, 1, 10);
+		var vfunc1 = new ValueFunction(sq);
+		var vfunc2 = new ValueFunction(null);
+
+		expect(vfunc1.equals(vfunc2)).toBe(false);
+	});
+
+	it("non empty functions are equal", function() {
+		var vfunc1 = new ValueFunction(null);
+		vfunc1.setValue(1, 2);
+		var vfunc2 = new ValueFunction(null);
+		vfunc2.setValue(1, 2);
+
+		expect(vfunc1.equals(vfunc2)).toBe(true);
+	});
+
+	it("non empty functions are equal", function() {
+		var vfunc1 = new ValueFunction(null);
+		vfunc1.setValue(1, 2);
+		var vfunc2 = new ValueFunction(null);
+
+		expect(vfunc1.equals(vfunc2)).toBe(false);
 	});
 });
