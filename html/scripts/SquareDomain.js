@@ -95,6 +95,29 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	};
 
 	/**
+	 * Determines if the SquareDomain is equal to "x"
+	 * 
+	 * @param x
+	 *            The object to compare it to.
+	 * 
+	 * @returns True if it is equal to "x", false otherwise.
+	 * 
+	 * They are regarded as equal if "x" also is a SquareDomain with the same
+	 * dimensions and amount of segments.
+	 */
+	this.equals = function(x) {
+		if (this === x) {
+			return true;
+		}
+
+		if (x instanceof SquareDomain) {
+			return (x.getMin() == this.getMin())
+					&& (x.getMax() == this.getMax())
+					&& (x.getSegments() == this.getSegments());
+		}
+	};
+
+	/**
 	 * Returns the cell index of the lower bound.
 	 * 
 	 * @param x
@@ -251,6 +274,15 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	};
 
 	/**
+	 * Returns the upper bound of the domain.
+	 * 
+	 * @returns The upper bound of the domain.
+	 */
+	this.getMax = function() {
+		return max;
+	};
+
+	/**
 	 * Returns the maximal valid GridPointIndex.
 	 * 
 	 * This means that valid grid cell indices range from [0,0,0,0] to
@@ -267,6 +299,15 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 			maximalGridIndex[i] = segments;
 		}
 		return maximalGridIndex;
+	};
+
+	/**
+	 * Returns the lower bound of the domain.
+	 * 
+	 * @returns The lower bound of the domain.
+	 */
+	this.getMin = function() {
+		return min;
 	};
 
 	/**
@@ -289,6 +330,15 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 		}
 
 		return s;
+	};
+
+	/**
+	 * Returns the amount of segments of the domain.
+	 * 
+	 * @returns The amount of segments of the domain.
+	 */
+	this.getSegments = function() {
+		return segments;
 	};
 
 	/**

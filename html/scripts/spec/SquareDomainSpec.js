@@ -148,4 +148,29 @@ describe("SquareDomain", function() {
 			expect(sq.isGridPoint(offGrid[i])).toBe(false);
 		}
 	});
+
+	it("is equal to itself", function() {
+		var sq = new SquareDomain(0, 1, 11);
+
+		expect(sq.equals(sq)).toBe(true);
+	});
+
+	it("equals to be recursive", function() {
+		var sq = new SquareDomain(0, 1, 11);
+		var sq2 = new SquareDomain(0, 1, 11);
+
+		expect(sq.equals(sq2)).toBe(true);
+		expect(sq2.equals(sq)).toBe(true);
+	});
+
+	it("equals to be recursive", function() {
+		var sq = new SquareDomain(0, 1, 11);
+		var sq2 = new SquareDomain(1, 1, 11);
+		var sq3 = new SquareDomain(0, 2, 11);
+		var sq4 = new SquareDomain(0, 1, 12);
+
+		expect(sq.equals(sq2)).toBe(false);
+		expect(sq.equals(sq3)).toBe(false);
+		expect(sq.equals(sq4)).toBe(false);
+	});
 });
