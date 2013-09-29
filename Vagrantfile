@@ -37,11 +37,7 @@ Vagrant::Config.run do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
   # Provision via inline shell scripts
-  config.vm.provision :shell,
-    :inline => "sudo apt-get update --yes &&
-                sudo apt-get install --yes npm vim &&
-                sudo npm install -g jasmine-node &&
-                jasmine-node --autotest /vagrant/html/scripts/spec --watch /vagrant/html/scripts/spec"
+  config.vm.provision :shell, :path => "vagrant/provision.sh"
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
