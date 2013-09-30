@@ -173,4 +173,13 @@ describe("SquareDomain", function() {
 		expect(sq.equals(sq3)).toBe(false);
 		expect(sq.equals(sq4)).toBe(false);
 	});
+
+	it("knows when index is feasible", function() {
+		var sq = new SquareDomain(0, 1, 11);
+
+		expect(sq.isFeasibleIndex([0, 0, 0, 0])).toBe(true);
+		expect(sq.isFeasibleIndex([0, 1, 0, 10])).toBe(true);
+		expect(sq.isFeasibleIndex([0, -2, 0, 0])).toBe(false);
+		expect(sq.isFeasibleIndex([11, 1, 0, 10])).toBe(false);
+	});
 });

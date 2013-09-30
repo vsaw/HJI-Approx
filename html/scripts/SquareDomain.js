@@ -342,6 +342,31 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	};
 
 	/**
+	 * Determines if a GridPointIndex is feasible for the given player.
+	 *
+	 * @param x The GridPointIndex to check.
+	 * @param p The player to check his position.
+	 *
+	 * @returns True if the player is contained in the domain and feasible and
+	 * 		false otherwise.
+	 *
+	 * Providing the player is optional. If he is not provided both players are
+	 * going to be checked.
+	 */
+	this.isFeasibleIndex = function(x, p) {
+		if(x == null) {
+			return false;
+		}
+
+		for(var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			if(x[i] < 0 || x[i] > this.getMaximalGridIndex()[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Determines if the given state is located on the discrete grid of the
 	 * domain.
 	 * 
