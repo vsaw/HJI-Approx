@@ -20,4 +20,4 @@ echo "filetype on" >> ~/.vimrc
 # The jasmine-node will not finish but continue to wath and test files in node.
 sudo apt-get install --yes npm
 sudo npm install -g jasmine-node
-jasmine-node --autotest /vagrant/html/scripts/spec --watch /vagrant/html/scripts/spec
+jasmine-node --autotest /vagrant/html/scripts/spec --watch /vagrant/html/scripts/*.js
