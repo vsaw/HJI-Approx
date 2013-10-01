@@ -175,6 +175,16 @@ var ValueFunction = function(dom) {
 	};
 
 	/**
+	 * Sets the amount of iterations needed to compute the Value Function.
+	 * 
+	 * @param n
+	 *            The amount of iterations used to compute the value function
+	 */
+	this.setIterations = function(n) {
+		iterations = n;
+	};
+
+	/**
 	 * Sets the value of the function at the given index.
 	 * 
 	 * @param index
