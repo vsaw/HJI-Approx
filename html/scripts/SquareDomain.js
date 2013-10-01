@@ -162,7 +162,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	this.convexDecomposition = function(x) {
 		// Initialize the linear combination with clones of x and empty indices
 		var ret = new LinearCombination();
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			ret.setPoint(i, GameStateDomain.cloneState(x));
 			ret.setIndex(i, []);
 		}
@@ -171,7 +171,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 		 * d is the direction (or since we are projecting alongside the axis of
 		 * our coordinate system) the dimension we are currently working on.
 		 */
-		for ( var d = 0; d < Definitions.STATE_SPACE_DIMENSION; d++) {
+		for (var d = 0; d < Definitions.STATE_SPACE_DIMENSION; d++) {
 
 			/*
 			 * i is the index of the point in the linear combination that we are
@@ -209,7 +209,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 					var cIndex = ceilToCellIndex(ret.getPoint(i)[d]);
 					var lambda = 1 - (ret.getPoint(i)[d] - f) / width;
 
-					for ( var j = 0; j < numChilds; j++) {
+					for (var j = 0; j < numChilds; j++) {
 						/* set the factor, point and grid index. */
 						ret.setFactor(i, ret.getFactor(i) * lambda);
 						ret.getPoint(i)[d] = f;
@@ -218,7 +218,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 						i++;
 					}
 
-					for ( var j = 0; j < numChilds; j++) {
+					for (var j = 0; j < numChilds; j++) {
 						if (f != c) {
 							/* set the factor, point and grid index. */
 							ret.setFactor(i, ret.getFactor(i) * (1 - lambda));
@@ -267,7 +267,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	 */
 	this.getGridIndex = function(x) {
 		var index = [];
-		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
 			index[i] = Math.round((x[i] - min) / width);
 		}
 		return index;
@@ -295,7 +295,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	this.getMaximalGridIndex = function() {
 		// Initialize the maximal grid index.
 		var maximalGridIndex = [];
-		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
 			maximalGridIndex[i] = segments;
 		}
 		return maximalGridIndex;
@@ -325,7 +325,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	this.getPoint = function(index) {
 		var s = [];
 
-		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
 			s[i] = min + (index[i] * width);
 		}
 
@@ -343,23 +343,25 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 
 	/**
 	 * Determines if a GridPointIndex is feasible for the given player.
-	 *
-	 * @param x The GridPointIndex to check.
-	 * @param p The player to check his position.
-	 *
+	 * 
+	 * @param x
+	 *            The GridPointIndex to check.
+	 * @param p
+	 *            The player to check his position.
+	 * 
 	 * @returns True if the player is contained in the domain and feasible and
-	 * 		false otherwise.
-	 *
+	 *          false otherwise.
+	 * 
 	 * Providing the player is optional. If he is not provided both players are
 	 * going to be checked.
 	 */
 	this.isFeasibleIndex = function(x, p) {
-		if(x == null) {
+		if (x == null) {
 			return false;
 		}
 
-		for(var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
-			if(x[i] < 0 || x[i] > this.getMaximalGridIndex()[i]) {
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			if (x[i] < 0 || x[i] > this.getMaximalGridIndex()[i]) {
 				return false;
 			}
 		}
@@ -379,7 +381,7 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	 * @returns True if it is part of the discrete grid; otherwise false.
 	 */
 	this.isGridPoint = function(x) {
-		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
 			// For performance reasons we do the feasibility check on the fly.
 			if (x[i] < min || x[i] > max) {
 				return false;

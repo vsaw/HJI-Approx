@@ -44,11 +44,11 @@ describe("SquareDomain", function() {
 		var s = [ 0.1, 0.9, -0.5, -1.0 ];
 
 		var lc = sq.convexDecomposition(s);
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			var corner = lc.getPoint(i);
 			if (corner != null) {
 				var cornerIndex = sq.getGridIndex(corner);
-				for ( var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
+				for (var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
 					expect(cornerIndex[j]).toBeCloseTo(lc.getIndex(i)[j], 3);
 				}
 			}
@@ -82,9 +82,9 @@ describe("SquareDomain", function() {
 				[ 10, 10, 11, 11 ], [ 20, 15, 10, 20 ], [ 0, 0, 5, 8 ],
 				[ 0, 0, 0, 0 ] ];
 
-		for ( var i = 0; i < points.length; i++) {
+		for (var i = 0; i < points.length; i++) {
 			var ret = sq.getGridIndex(points[i]);
-			for ( var j = 0; j < 4; j++) {
+			for (var j = 0; j < 4; j++) {
 				expect(ret[j]).toBe(index[i][j]);
 			}
 		}
@@ -93,10 +93,10 @@ describe("SquareDomain", function() {
 	it("knows the maximal grid index", function() {
 		var param = [ 10, 20, 2 ];
 
-		for ( var outer = 0; outer < param.length; outer++) {
+		for (var outer = 0; outer < param.length; outer++) {
 			var sq = new SquareDomain(0, 1, param[outer]);
 			var ind = sq.getMaximalGridIndex();
-			for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
 				expect(param[outer] - 1).toBeCloseTo(ind[i], 6);
 			}
 		}
@@ -140,11 +140,11 @@ describe("SquareDomain", function() {
 				[ 0.0, 0.0, 0.1, 0.87 ], [ 0.0, 0.55, 1.0, 1.0 ],
 				[ 1.0, 1.0, 1.1, 1.0 ] ];
 
-		for ( var i = 0; i < 5; i++) {
+		for (var i = 0; i < 5; i++) {
 			expect(sq.isGridPoint(onGrid[i])).toBe(true);
 		}
 
-		for ( var i = 0; i < 5; i++) {
+		for (var i = 0; i < 5; i++) {
 			expect(sq.isGridPoint(offGrid[i])).toBe(false);
 		}
 	});
@@ -177,9 +177,9 @@ describe("SquareDomain", function() {
 	it("knows when index is feasible", function() {
 		var sq = new SquareDomain(0, 1, 11);
 
-		expect(sq.isFeasibleIndex([0, 0, 0, 0])).toBe(true);
-		expect(sq.isFeasibleIndex([0, 1, 0, 10])).toBe(true);
-		expect(sq.isFeasibleIndex([0, -2, 0, 0])).toBe(false);
-		expect(sq.isFeasibleIndex([11, 1, 0, 10])).toBe(false);
+		expect(sq.isFeasibleIndex([ 0, 0, 0, 0 ])).toBe(true);
+		expect(sq.isFeasibleIndex([ 0, 1, 0, 10 ])).toBe(true);
+		expect(sq.isFeasibleIndex([ 0, -2, 0, 0 ])).toBe(false);
+		expect(sq.isFeasibleIndex([ 11, 1, 0, 10 ])).toBe(false);
 	});
 });

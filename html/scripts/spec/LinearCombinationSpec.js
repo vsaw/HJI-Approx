@@ -39,7 +39,7 @@ var GameStateDomain = require('../GameStateDomain.js');
 describe("LinearCombination", function() {
 	it("initializes with no points", function() {
 		var lc = new LinearCombination();
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			expect(lc.getPoint(i)).toBeNull();
 			expect(lc.getFactor(i)).toBeCloseTo(1, 6);
 		}
@@ -48,11 +48,11 @@ describe("LinearCombination", function() {
 	it("gets and sets factors", function() {
 		var lc = new LinearCombination();
 
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			lc.setFactor(i, i);
 		}
 
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			expect(lc.getFactor(i)).toBe(i);
 		}
 	});
@@ -60,17 +60,17 @@ describe("LinearCombination", function() {
 	it("gets and sets points", function() {
 		var lc = new LinearCombination();
 
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			var p = [];
-			for ( var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
+			for (var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
 				p[j] = i;
 			}
 			lc.setPoint(i, p);
 		}
 
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			var p = [];
-			for ( var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
+			for (var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
 				p[j] = i;
 			}
 			expect(lc.getPoint(i)).toEqual(p);
@@ -81,13 +81,13 @@ describe("LinearCombination", function() {
 		var lc = new LinearCombination();
 
 		// Build Linear Combination.
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			lc.setFactor(i, Math.pow(2, -1
 					* Definitions.LINEAR_COMBINATON_LENGTH));
 
 			var dp = [];
 			var p = i / 2;
-			for ( var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
+			for (var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
 				if (j == p) {
 					dp[j] = Math.pow(-1, i);
 				} else {

@@ -44,10 +44,10 @@ describe("ValueFunctionSpec", function() {
 		var v = new ValueFunction(sq);
 
 		// New ValueFunctions must be equal to the zero function.
-		for ( var i0 = 0; i0 <= n; i0++) {
-			for ( var i1 = 0; i1 <= n; i1++) {
-				for ( var i2 = 0; i2 <= n; i2++) {
-					for ( var i3 = 0; i3 <= n; i3++) {
+		for (var i0 = 0; i0 <= n; i0++) {
+			for (var i1 = 0; i1 <= n; i1++) {
+				for (var i2 = 0; i2 <= n; i2++) {
+					for (var i3 = 0; i3 <= n; i3++) {
 						expect(v.getValue([ i0, i1, i2, i3 ])).toBe(undefined);
 					}
 				}
@@ -70,9 +70,9 @@ describe("ValueFunctionSpec", function() {
 				};
 
 				var getAlteredPovars = function(index) {
-					for ( var i = 0; i < alteredPovars.length; i++) {
+					for (var i = 0; i < alteredPovars.length; i++) {
 						var found = true;
-						for ( var j = 0; j < index.length; j++) {
+						for (var j = 0; j < index.length; j++) {
 							found &= index[j] == alteredPovars[i][j];
 						}
 						if (found) {
@@ -93,13 +93,13 @@ describe("ValueFunctionSpec", function() {
 
 				// New ValueFunctions must be equal to the zero
 				// function.
-				for ( var i0 = 0; i0 <= n; i0++) {
+				for (var i0 = 0; i0 <= n; i0++) {
 					index[0] = i0;
-					for ( var i1 = 0; i1 <= n; i1++) {
+					for (var i1 = 0; i1 <= n; i1++) {
 						index[1] = i1;
-						for ( var i2 = 0; i2 <= n; i2++) {
+						for (var i2 = 0; i2 <= n; i2++) {
 							index[2] = i2;
-							for ( var i3 = 0; i3 <= n; i3++) {
+							for (var i3 = 0; i3 <= n; i3++) {
 								index[3] = i3;
 
 								expect(v.getValue(index)).toBe(
@@ -119,13 +119,13 @@ describe("ValueFunctionSpec", function() {
 				var v = new ValueFunction(sq);
 
 				// New ValueFunctions must be equal to the zero function.
-				for ( var i0 = 0; i0 <= n; i0++) {
+				for (var i0 = 0; i0 <= n; i0++) {
 					index[0] = i0;
-					for ( var i1 = 0; i1 <= n; i1++) {
+					for (var i1 = 0; i1 <= n; i1++) {
 						index[1] = i1;
-						for ( var i2 = 0; i2 <= n; i2++) {
+						for (var i2 = 0; i2 <= n; i2++) {
 							index[2] = i2;
-							for ( var i3 = 0; i3 <= n; i3++) {
+							for (var i3 = 0; i3 <= n; i3++) {
 								index[3] = i3;
 
 								v.setValue(index, 0);
@@ -134,7 +134,7 @@ describe("ValueFunctionSpec", function() {
 					}
 				}
 
-				for ( var i = 0; i < 4; i++) {
+				for (var i = 0; i < 4; i++) {
 					index[i] = 0;
 				}
 

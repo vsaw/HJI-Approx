@@ -110,7 +110,7 @@ var ValueFunction = function(dom) {
 				}
 			}
 
-			for ( var i = 0; i < values.length; i++) {
+			for (var i = 0; i < values.length; i++) {
 				if (x.getValue(i) != values[i]) {
 					return false;
 				}
@@ -140,7 +140,7 @@ var ValueFunction = function(dom) {
 		var lc = this.getDomain().convexDecomposition(x);
 
 		var ret = 0;
-		for ( var i = 0; i < lc.getSize(); i++) {
+		for (var i = 0; i < lc.getSize(); i++) {
 			if (lc.getPoint(i) != undefined) {
 				ret += lc.getFactor(i) * this.getValue(lc.getIndex(i));
 			}
