@@ -60,7 +60,7 @@ var LinearCombination = function() {
 	 */
 	var indexes = [];
 
-	for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+	for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 		factors[i] = 1;
 		points[i] = null;
 	}
@@ -77,14 +77,14 @@ var LinearCombination = function() {
 	 */
 	this.eval = function() {
 		var ret = [];
-		for ( var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
 			ret[i] = 0;
 		}
 
-		for ( var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
+		for (var i = 0; i < Definitions.LINEAR_COMBINATON_LENGTH; i++) {
 			var next = this.getPoint(i);
 			if (next != null) {
-				for ( var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
+				for (var j = 0; j < Definitions.STATE_SPACE_DIMENSION; j++) {
 					ret[j] = ret[j] + this.getFactor(i) * next[j];
 				}
 			}
