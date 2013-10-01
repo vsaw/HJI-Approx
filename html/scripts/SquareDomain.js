@@ -342,6 +342,30 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 	};
 
 	/**
+	 * Determines if a state is feasible for the given player.
+	 * 
+	 * @param x
+	 *            The state to check.
+	 * @param p
+	 *            The player to check his position.
+	 * 
+	 * @returns True if the player is contained in the domain and feasible and
+	 *          false otherwise.
+	 */
+	this.isFeasible = function(state, p) {
+		if (state == null) {
+			return false;
+		}
+
+		for (var i = 0; i < Definitions.STATE_SPACE_DIMENSION; i++) {
+			if (state[i] < min || state[i] > max) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Determines if a GridPointIndex is feasible for the given player.
 	 * 
 	 * @param x
