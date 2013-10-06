@@ -21,6 +21,9 @@ else
 	echo "filetype on" >> ~/.vimrc
 fi
 
+# Install make and GCC to compile the C++ sources
+sudo apt-get install --yes make g++
+
 # Install and run node.js
 # The jasmine-node will not finish but continue to wath and test files in node.
 sudo apt-get install --yes npm
