@@ -367,7 +367,7 @@ void test_SquareDomainRoundHole_isFeasible() {
 	{ -2, -2, cos(M_PI_4), sin(M_PI_4) }, { 1, 1, 0.9, 0 }, { 1, 1, 0, -0.9 }, {
 			-2, -2, cos(M_PI_4), -sin(M_PI_4) } };
 
-	for (int i = 0; i < sizeof(unfeasiblePoints) / sizeof(unfeasiblePoints[0]);
+	for (unsigned int i = 0; i < sizeof(unfeasiblePoints) / sizeof(unfeasiblePoints[0]);
 			i++) {
 		ASSERT(!sq.isFeasible(unfeasiblePoints[i]),
 				"Unfeasible Point %d: %f %f %f %f\n",
@@ -379,7 +379,7 @@ void test_SquareDomainRoundHole_isFeasible() {
 	{ -2, -2, (1 + 1 * sq.getMaximalResolutionWidth()) * cos(M_PI_4), (1
 			+ 1 * sq.getMaximalResolutionWidth()) * sin(M_PI_4) } };
 
-	for (int i = 0; i < sizeof(feasiblePoints) / sizeof(feasiblePoints[0]);
+	for (unsigned int i = 0; i < sizeof(feasiblePoints) / sizeof(feasiblePoints[0]);
 			i++) {
 		ASSERT(sq.isFeasible(feasiblePoints[i]),
 				"Feasible Point %d: %f %f %f %f\n",
