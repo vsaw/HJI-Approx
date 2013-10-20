@@ -1214,7 +1214,9 @@ int main(int argc, char *argv[]) {
 #if DEBUG
 	// TESTS
 	if (true) {
-		void (*tests[])(void) = {test_GameStateDomain_clonePoint,
+		void (*tests[])(void) = {
+			test_Game_computeTinyValueFunction,
+			test_GameStateDomain_clonePoint,
 			test_GameStateDomain_equals,
 			test_GameStateDomain_eval,
 			test_LinearCombination_creation,

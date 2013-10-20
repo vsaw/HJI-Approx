@@ -95,4 +95,6 @@ void test_ValueFunction_eval();
 
 void test_ValueFunction_toArrayIndex();
 
+void test_Game_computeTinyValueFunction();
+
 #endif /* TESTS_H_ */

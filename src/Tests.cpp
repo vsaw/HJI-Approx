@@ -108,6 +108,49 @@ void profile_Game_computeValueFunction() {
 	delete g;
 }
 
+void test_Game_computeTinyValueFunction() {
+	cout << "==== test_Game_computeTinyValueFunction" << endl;
+
+	unsigned int n = 2;
+	SquareDomain *sq = new SquareDomain(-2, 2, n);
+	Game *g = new Game();
+
+	g->setDomain(sq);
+	g->setControlResolution(6);
+	g->setVelocity(Pursuer, 2);
+	g->setTimeStepSize(4 / (2 * n));
+	g->setMaxIterations(5);
+
+	for(unsigned int iteration = 0; iteration < g->getMaxIterations(); iteration++) {
+		ValueFunction *vfunc = g->computeValueFunction(1e-3);
+
+		for(int i = 0; i < sq->getMaximalGridIndex()[0]; i++) {
+			for(int j = 0; j < sq->getMaximalGridIndex()[1]; j++) {
+				for(int k = 0; k < sq->getMaximalGridIndex()[2]; k++) {
+					for(int l = 0; l < sq->getMaximalGridIndex()[3]; l++) {
+						GridPointIndex index[] = {i,j,k,l};
+						ASSERT_EQUALS(0, vfunc->getValue(index), 0.1,
+							"0 != %f\n", vfunc->getValue(index));
+					}
+				}
+			}
+		}
+
+#if 0
+		// Dump the vfunc for manual debugging
+		cout << iteration;
+		cout << ": ";
+		vfunc->print();
+		cout << endl;
+#endif
+
+		delete vfunc;
+	}
+
+	delete sq;
+	delete g;
+}
+
 void test_GameStateDomain_clonePoint() {
 	cout << "==== test_GameStateDomain_clonePoint()" << endl;
 
