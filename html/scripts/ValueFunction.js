@@ -95,29 +95,7 @@ var ValueFunction = function(dom) {
 	 * values.
 	 */
 	this.equals = function(x) {
-		if (this === x) {
-			return true;
-		}
-
-		if (x instanceof ValueFunction) {
-			if (domain != null) {
-				if (!domain.equals(x.getDomain())) {
-					return false;
-				}
-			} else {
-				if (x.getDomain() != null) {
-					return null;
-				}
-			}
-
-			for (var i = 0; i < values.length; i++) {
-				if (x.getValue(i) != values[i]) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
+		return this.isClose(x, 0);
 	};
 
 	/**
@@ -181,6 +159,53 @@ var ValueFunction = function(dom) {
 	 */
 	this.getValue = function(index) {
 		return values[index];
+	};
+
+	/**
+	 * Determines if the SquareDomain is close to "x" with the given maximum
+	 * distance eps
+	 * 
+	 * @param x
+	 *            The object to compare it to.
+	 * @param eps
+	 *            The maximum pointwise distance between "x" and this
+	 *            ValueFunction.
+	 * 
+	 * @returns True if it is close to "x", false otherwise.
+	 * 
+	 * They are regarded as equal if "x" has an equal domain and the value are
+	 * no further apart than "eps".
+	 */
+	this.isClose = function(x, eps) {
+		if (this === x) {
+			return true;
+		}
+
+		if (x instanceof ValueFunction) {
+			if (domain != null) {
+				if (!domain.equals(x.getDomain())) {
+					return false;
+				}
+			} else {
+				if (x.getDomain() != null) {
+					return false;
+				}
+			}
+
+			for (var i = 0; i < values.length; i++) {
+				if (isNaN(x.getValue(i)) || isNaN(values[i])) {
+					if (x.getValue(i) != values[i]) {
+						return false;
+					}
+				} else {
+					if ((x.getValue(i) - values[i]) > eps) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	};
 
 	/**
