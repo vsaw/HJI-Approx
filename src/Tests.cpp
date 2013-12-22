@@ -119,18 +119,23 @@ void test_Game_computeTinyValueFunction() {
 	g->setControlResolution(6);
 	g->setVelocity(Pursuer, 2);
 	g->setTimeStepSize(4 / (2 * n));
-	g->setMaxIterations(5);
 
-	for(unsigned int iteration = 0; iteration < g->getMaxIterations(); iteration++) {
+	for(unsigned int iteration = 0; iteration < 5; iteration++) {
+		g->setMaxIterations(iteration);
 		ValueFunction *vfunc = g->computeValueFunction(1e-3);
+
+		int iterationCount = iteration > 2 ? 2 : iteration;
+		ASSERT_EQUALS(iterationCount, vfunc->getIterations(), 0.1,
+			"%d != %d", iterationCount, vfunc->getIterations());
+		decimal expected = (iteration < 2) ? 1 : 0;
 
 		for(int i = 0; i < sq->getMaximalGridIndex()[0]; i++) {
 			for(int j = 0; j < sq->getMaximalGridIndex()[1]; j++) {
 				for(int k = 0; k < sq->getMaximalGridIndex()[2]; k++) {
 					for(int l = 0; l < sq->getMaximalGridIndex()[3]; l++) {
 						GridPointIndex index[] = {i,j,k,l};
-						ASSERT_EQUALS(0, vfunc->getValue(index), 0.1,
-							"0 != %f\n", vfunc->getValue(index));
+						ASSERT_EQUALS(expected, vfunc->getValue(index), 0.1,
+							"%f != %f\n", expected, vfunc->getValue(index));
 					}
 				}
 			}
