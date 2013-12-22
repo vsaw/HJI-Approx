@@ -163,6 +163,15 @@ var ValueFunction = function(dom) {
 	};
 
 	/**
+	 * Gets the amount of iterations needed to compute the Value Function.
+	 * 
+	 * @returns The amount of iterations needed to compute the Value Function.
+	 */
+	this.getIterations = function() {
+		return iterations;
+	};
+
+	/**
 	 * Returns the value of the ValueFunction at a given GridPointIndex.
 	 * 
 	 * @param index
