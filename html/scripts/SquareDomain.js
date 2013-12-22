@@ -115,6 +115,8 @@ var SquareDomain = function(minPos, maxPos, numNodes) {
 					&& (x.getMax() == this.getMax())
 					&& (x.getSegments() == this.getSegments());
 		}
+
+		return false;
 	};
 
 	/**
