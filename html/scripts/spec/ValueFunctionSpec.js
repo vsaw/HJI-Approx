@@ -288,10 +288,23 @@ describe("ValueFunctionSpec", function() {
 				0.934109, 0.964081, 0.943614, 0.912161, 0.886901, 0.871548,
 				0.930589, 0.881505, 0.748748, 0.666853, 0.662549, 0.877604,
 				0.817027, 0.621726, 0, 0, 0.828536, 0.758593, 0.548982, 0, 0 ];
-		var sq = new SquareDomain(-2, 2, 5);
+		var discretizationSteps = 5;
+		var sq = new SquareDomain(-2, 2, discretizationSteps);
 		var vfunc008 = new ValueFunction(sq);
-		for (var i = 0; i < values.length; i++) {
-			vfunc008.setValue(i, values[i]);
+		// The first 4 values describe the discretization of the domain
+		// in each dimension so skip them!
+		for (var i = 4; i < values.length; i++) {
+			/*
+			 * Index is a gridpoint index so the array can not be filled
+			 * directly but we have to convert the arry index to the gridpoint
+			 * index of the domain.
+			 */
+			var gridIndex = [];
+			for (var j = 0; j < 4; j++) {
+				gridIndex[j] = Math.floor((i - 4) / discretizationSteps ^ j)
+						% discretizationSteps;
+			}
+			vfunc008.setValue(gridIndex, values[i]);
 		}
 		return vfunc008;
 	};
@@ -310,8 +323,18 @@ describe("ValueFunctionSpec", function() {
 		var vfunc = createNonTrivialValueFunction();
 		var vfuncAltered = createNonTrivialValueFunction();
 		// Change the value function at an arbitrary index
-		var index = 20;
+		var index = [ 1, 2, 3, 4 ];
 		vfuncAltered.setValue(index, vfunc.getValue(index) + 0.0001);
 		expect(vfunc.isClose(vfuncAltered, 0.1)).toBe(true);
+	});
+
+	it("close detects changes properly!", function() {
+		var vfunc = createNonTrivialValueFunction();
+		var vfuncAltered = createNonTrivialValueFunction();
+		expect(vfunc.getDomain().equals(vfuncAltered.getDomain())).toBe(true);
+		// Change the value function at an arbitrary index
+		var index = [ 1, 2, 3, 4 ];
+		vfuncAltered.setValue(index, vfunc.getValue(index) + 0.1);
+		expect(vfunc.isClose(vfuncAltered, 0.01)).toBe(false);
 	});
 });

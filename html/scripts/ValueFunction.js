@@ -192,7 +192,7 @@ var ValueFunction = function(dom) {
 				}
 			}
 
-			for (var i = 0; i < values.length; i++) {
+			return Object.keys(values).every(function(i) {
 				if (isNaN(x.getValue(i)) || isNaN(values[i])) {
 					if (x.getValue(i) != values[i]) {
 						return false;
@@ -202,8 +202,8 @@ var ValueFunction = function(dom) {
 						return false;
 					}
 				}
-			}
-			return true;
+				return true;
+			});
 		}
 		return false;
 	};
